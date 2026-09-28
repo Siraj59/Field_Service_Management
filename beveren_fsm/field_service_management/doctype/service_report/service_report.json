@@ -14,12 +14,15 @@
   "service_order",
   "service_quotation",
   "purchase_order",
+  "external_fsr_number",
   "equipment_section",
   "facility",
   "location",
   "equipment_column",
+  "equipment_model",
   "item_code",
   "serial_no",
+  "serial_number_text",
   "asset_id",
   "modality",
   "work_section",
@@ -30,6 +33,8 @@
   "work_summary",
   "parts_used",
   "recommendations",
+  "time_log_section",
+  "time_entries",
   "completion_section",
   "disposition",
   "engineer_signature",
@@ -37,6 +42,7 @@
   "completion_column",
   "labor_hours",
   "travel_hours",
+  "total_hours",
   "customer_signature",
   "customer_signoff_date"
  ],
@@ -101,6 +107,12 @@
    "options": "Service Quotation"
   },
   {
+   "fieldname": "external_fsr_number",
+   "label": "Original FSR Number",
+   "fieldtype": "Data",
+   "description": "Reference number on an existing customer-facing service report (for example, 741)."
+  },
+  {
    "fieldname": "purchase_order",
    "label": "Customer PO Number",
    "fieldtype": "Data",
@@ -127,6 +139,12 @@
    "fieldtype": "Column Break"
   },
   {
+   "fieldname": "equipment_model",
+   "label": "Manufacturer / Model",
+   "fieldtype": "Data",
+   "description": "Free text when the equipment is not registered as an Item."
+  },
+  {
    "fieldname": "item_code",
    "label": "Equipment Item",
    "fieldtype": "Link",
@@ -137,6 +155,12 @@
    "label": "Serial Number",
    "fieldtype": "Link",
    "options": "Serial No"
+  },
+  {
+   "fieldname": "serial_number_text",
+   "label": "Manufacturer Serial Number (Text)",
+   "fieldtype": "Data",
+   "description": "Use this when no ERPNext Serial No record exists."
   },
   {
    "fieldname": "asset_id",
@@ -191,6 +215,18 @@
    "fieldtype": "Small Text"
   },
   {
+   "fieldname": "time_log_section",
+   "label": "Dated Work and Travel",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "time_entries",
+   "label": "Time Entries",
+   "fieldtype": "Table",
+   "options": "Service Report Time Entry",
+   "description": "Add each work period or travel leg. Hours and totals are calculated when saved."
+  },
+  {
    "fieldname": "completion_section",
    "label": "Completion",
    "fieldtype": "Section Break"
@@ -221,12 +257,22 @@
    "fieldname": "labor_hours",
    "label": "Labor Hours",
    "fieldtype": "Float",
-   "non_negative": 1
+   "non_negative": 1,
+   "description": "Calculated from time entries when a log is present. Existing reports without entries retain manual totals."
   },
   {
    "fieldname": "travel_hours",
    "label": "Travel Hours",
    "fieldtype": "Float",
+   "non_negative": 1,
+   "description": "Calculated from time entries when a log is present. Existing reports without entries retain manual totals."
+  },
+  {
+   "fieldname": "total_hours",
+   "label": "Total Hours",
+   "fieldtype": "Float",
+   "read_only": 1,
+   "precision": "3",
    "non_negative": 1
   },
   {
@@ -241,7 +287,7 @@
   }
  ],
  "links": [],
- "modified": "2025-01-25 03:17:27.417345",
+ "modified": "2026-09-28 18:05:00.000000",
  "modified_by": "Administrator",
  "module": "Field Service Management",
  "name": "Service Report",
@@ -279,5 +325,5 @@
  "naming_rule": "By \"Naming Series\" field",
  "is_submittable": 1,
  "title_field": "customer",
- "search_fields": "customer,service_order,serial_no,asset_id,purchase_order"
+ "search_fields": "customer,service_order,serial_no,asset_id,purchase_order,serial_number_text,external_fsr_number"
 }

@@ -1,0 +1,22 @@
+{
+ "actions": [],
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["activity_type", "start_datetime", "end_datetime", "duration_hours", "notes"],
+ "fields": [
+  {"fieldname": "activity_type", "fieldtype": "Select", "label": "Activity", "options": "\nWork\nTravel", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "start_datetime", "fieldtype": "Datetime", "label": "Start Date and Time", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "end_datetime", "fieldtype": "Datetime", "label": "End Date and Time", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "duration_hours", "fieldtype": "Float", "label": "Hours", "read_only": 1, "precision": "3", "in_list_view": 1},
+  {"fieldname": "notes", "fieldtype": "Small Text", "label": "Notes"}
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2026-09-28 18:05:00.000000",
+ "modified_by": "Administrator",
+ "module": "Field Service Management",
+ "name": "Service Report Time Entry",
+ "owner": "Administrator",
+ "permissions": []
+}

@@ -4,10 +4,12 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
+from frappe.utils import flt, get_datetime
 
 
 class ServiceReport(Document):
 	def validate(self):
+		self.calculate_time_entries()
 		if self.service_appointment:
 			appointment = frappe.get_doc("Service Appointment", self.service_appointment)
 			if appointment.customer != self.customer:
@@ -20,6 +22,36 @@ class ServiceReport(Document):
 				frappe.throw(_("The service order belongs to a different customer."))
 			if self.service_quotation and order.service_quotation != self.service_quotation:
 				frappe.throw(_("The quotation must match the service order's quotation."))
+
+	def calculate_time_entries(self):
+		"""Keep the existing manual totals for older reports without a time log."""
+		if not self.time_entries:
+			self.total_hours = flt(self.labor_hours) + flt(self.travel_hours)
+			return
+
+		totals = {"Work": 0.0, "Travel": 0.0}
+		intervals = []
+		for row in self.time_entries:
+			if not row.activity_type or not row.start_datetime or not row.end_datetime:
+				frappe.throw(_("Time entry {0} needs an activity, start, and end.").format(row.idx))
+			start = get_datetime(row.start_datetime)
+			end = get_datetime(row.end_datetime)
+			if end <= start:
+				frappe.throw(_("Time entry {0} must end after it starts.").format(row.idx))
+			if row.activity_type not in totals:
+				frappe.throw(_("Time entry {0} has an invalid activity type.").format(row.idx))
+			row.duration_hours = flt((end - start).total_seconds() / 3600, 3)
+			totals[row.activity_type] += row.duration_hours
+			intervals.append((start, end, row.idx))
+
+		intervals.sort()
+		for previous, current in zip(intervals, intervals[1:]):
+			if current[0] < previous[1]:
+				frappe.throw(_("Time entries {0} and {1} overlap.").format(previous[2], current[2]))
+
+		self.labor_hours = flt(totals["Work"], 3)
+		self.travel_hours = flt(totals["Travel"], 3)
+		self.total_hours = flt(self.labor_hours + self.travel_hours, 3)
 
 	def before_submit(self):
 		for field in ("reported_problem", "action_performed", "testing_and_results", "disposition"):

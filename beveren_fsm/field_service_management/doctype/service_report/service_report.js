@@ -1,4 +1,18 @@
 frappe.ui.form.on("Service Report", {
+  refresh(frm) {
+    toggle_time_totals(frm);
+  },
+  time_entries_add(frm) {
+    toggle_time_totals(frm);
+  },
+  time_entries_remove(frm) {
+    toggle_time_totals(frm);
+    if (!(frm.doc.time_entries || []).length) {
+      frm.set_value("labor_hours", 0);
+      frm.set_value("travel_hours", 0);
+      frm.set_value("total_hours", 0);
+    } else update_time_totals(frm);
+  },
   service_appointment(frm) {
     if (!frm.doc.service_appointment) return;
     frappe.db.get_doc("Service Appointment", frm.doc.service_appointment).then((appointment) => {
@@ -20,4 +34,52 @@ frappe.ui.form.on("Service Report", {
       }
     });
   },
+});
+
+function toggle_time_totals(frm) {
+  const has_entries = !!(frm.doc.time_entries || []).length;
+  frm.set_df_property("labor_hours", "read_only", has_entries);
+  frm.set_df_property("travel_hours", "read_only", has_entries);
+}
+
+function update_time_totals(frm) {
+  const rows = frm.doc.time_entries || [];
+  if (!rows.length) return;
+  const totals = { Work: 0, Travel: 0 };
+  for (const row of rows) {
+    if (row.activity_type in totals) totals[row.activity_type] += Number(row.duration_hours) || 0;
+  }
+  frm.set_value("labor_hours", Number(totals.Work.toFixed(3)));
+  frm.set_value("travel_hours", Number(totals.Travel.toFixed(3)));
+  frm.set_value("total_hours", Number((totals.Work + totals.Travel).toFixed(3)));
+}
+
+function update_time_entry(frm, cdt, cdn) {
+  const row = locals[cdt][cdn];
+  let hours = 0;
+  if (row.start_datetime && row.end_datetime) {
+    const start = new Date(row.start_datetime.replace(" ", "T"));
+    const end = new Date(row.end_datetime.replace(" ", "T"));
+    if (Number.isFinite(start.getTime()) && Number.isFinite(end.getTime()) && end > start) {
+      hours = Number(((end - start) / 3600000).toFixed(3));
+    }
+  }
+  frappe.model.set_value(cdt, cdn, "duration_hours", hours).then(() => update_time_totals(frm));
+}
+
+frappe.ui.form.on("Service Report Time Entry", {
+  time_entries_add(frm) {
+    toggle_time_totals(frm);
+  },
+  time_entries_remove(frm) {
+    toggle_time_totals(frm);
+    if (!(frm.doc.time_entries || []).length) {
+      frm.set_value("labor_hours", 0);
+      frm.set_value("travel_hours", 0);
+      frm.set_value("total_hours", 0);
+    } else update_time_totals(frm);
+  },
+  activity_type: update_time_entry,
+  start_datetime: update_time_entry,
+  end_datetime: update_time_entry,
 });
