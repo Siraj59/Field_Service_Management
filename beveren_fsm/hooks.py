@@ -10,16 +10,15 @@ app_license = "mit"
 
 # required_apps = []
 
-# Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "beveren_fsm",
-# 		"logo": "/assets/beveren_fsm/logo.png",
-# 		"title": "Field Service Management",
-# 		"route": "/beveren_fsm",
-# 		"has_permission": "beveren_fsm.api.permission.has_app_permission"
-# 	}
-# ]
+# Register the Service workspace on Frappe 16's desktop/apps screen.
+add_to_apps_screen = [
+	{
+		"name": "beveren_fsm",
+		"logo": "/assets/beveren_fsm/service-icon.svg",
+		"title": "Axiom Service",
+		"route": "/app/service",
+	}
+]
 
 fixtures = [
 	# Export your custom "Service Type" doctype
