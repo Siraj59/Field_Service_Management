@@ -21,6 +21,7 @@ add_to_apps_screen = [
 ]
 
 fixtures = [
+	{"doctype": "Print Format", "filters": [["name", "=", "Axiom Field Service Report"]]},
 	# Export your custom "Service Type" doctype
 	"Service Type",
 	"Product Location",

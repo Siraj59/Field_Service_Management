@@ -2,6 +2,7 @@
  "actions": [],
  "creation": "2025-01-25 03:17:15.184684",
  "doctype": "DocType",
+	"default_print_format": "Axiom Field Service Report",
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
