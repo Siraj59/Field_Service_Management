@@ -8,9 +8,17 @@ def create_service_invoice(doctype, docname, customer, items=None):
 	items = json.loads(items) if items else []
 	invoice = frappe.new_doc("Sales Invoice")
 	invoice.customer = customer
-	invoice.due_date = frappe.utils.nowdate()
 	invoice.custom_reference_service_doctype = doctype
 	invoice.custom_reference_service_document = docname
+	if doctype in ("Service Order", "Service Appointment"):
+		service_doc = frappe.get_doc(doctype, docname)
+		service_doc.check_permission("read")
+		if service_doc.customer != customer:
+			frappe.throw("Invoice customer must match the service job customer")
+		order_name = docname if doctype == "Service Order" else service_doc.service_order
+		if order_name:
+			order = frappe.get_doc("Service Order", order_name)
+			invoice.po_no = order.purchase_order
 	for item in items:
 		invoice.append(
 			"items",
@@ -29,15 +37,28 @@ def update_invoice_status(doc, method):
 	if not (doc.custom_reference_service_doctype and doc.custom_reference_service_document):
 		return
 
-	new_status = "Invoiced" or "Partly Invoiced" if method == "on_submit" else "Not Invoiced"
-
-	# Retrieve all item codes from the Sales Invoice
-	invoice_item_codes = {
-		item["item_code"]: item["qty"]
+	# Derive billed quantities from submitted invoices, so cancellation and partial
+	# invoicing cannot double-count quantities or leave a cancelled invoice billed.
+	invoice_names = frappe.get_all(
+		"Sales Invoice",
+		filters={
+			"custom_reference_service_doctype": doc.custom_reference_service_doctype,
+			"custom_reference_service_document": doc.custom_reference_service_document,
+			"docstatus": 1,
+		},
+		pluck="name",
+	)
+	invoice_names = [name for name in invoice_names if name != doc.name]
+	if method == "on_submit":
+		invoice_names.append(doc.name)
+	invoice_item_codes = {}
+	if invoice_names:
 		for item in frappe.get_all(
-			"Sales Invoice Item", filters={"parent": doc.name}, fields=["item_code", "qty"]
-		)
-	}
+			"Sales Invoice Item",
+			filters={"parent": ["in", invoice_names]},
+			fields=["item_code", "qty"],
+		):
+			invoice_item_codes[item.item_code] = invoice_item_codes.get(item.item_code, 0) + item.qty
 
 	# Load the referenced service document
 	ref_doctype = doc.custom_reference_service_doctype
@@ -51,16 +72,17 @@ def update_invoice_status(doc, method):
 			frappe.throw(f"No '{table}' child table found in {ref_doctype}")
 
 		for row in getattr(service_doc, table):
-			invoiced_qty = invoice_item_codes[row.item_code]
-			if row.item_code in invoice_item_codes.keys():
-				row.invoiced_qty += invoiced_qty
-				if row.invoice_status != new_status:
-					if row.qty > invoiced_qty > 0:
-						row.invoice_status = "Partly Invoiced"
-					if row.qty == invoiced_qty:
-						row.invoice_status = "Invoiced"
-
-					updated = True
+			remaining = invoice_item_codes.get(row.item_code, 0)
+			invoiced_qty = min(row.qty, remaining)
+			invoice_item_codes[row.item_code] = max(0, remaining - invoiced_qty)
+			status = (
+				"Invoiced" if invoiced_qty >= row.qty else
+				"Partly Invoiced" if invoiced_qty > 0 else "Not Invoiced"
+			)
+			if row.invoiced_qty != invoiced_qty or row.invoice_status != status:
+				row.invoiced_qty = invoiced_qty
+				row.invoice_status = status
+				updated = True
 
 	if updated:
 		service_doc.save()
@@ -132,7 +154,7 @@ def update_per_billed_status(doc, method):
 	total_amount = 0.0
 	billed_amount = 0.0
 
-	if not (doc.custom_reference_service_doctype or doc.custom_reference_service_document):
+	if not (doc.custom_reference_service_doctype and doc.custom_reference_service_document):
 		return
 
 	ref_doc = frappe.get_doc(doc.custom_reference_service_doctype, doc.custom_reference_service_document)

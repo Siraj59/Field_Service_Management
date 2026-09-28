@@ -11,6 +11,7 @@
   "naming_series",
   "status",
   "service_quotation",
+  "purchase_order",
   "service_request",
   "type",
   "customer",
@@ -676,6 +677,12 @@
    "options": "Service Quotation",
    "read_only": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "purchase_order",
+   "label": "Customer PO Number",
+   "fieldtype": "Data",
+   "in_list_view": 1
   },
   {
    "fieldname": "service_request",

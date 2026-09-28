@@ -1,20 +1,245 @@
 {
  "actions": [],
- "allow_rename": 1,
  "creation": "2025-01-25 03:17:15.184684",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "name1"
+  "naming_series",
+  "job_details",
+  "customer",
+  "service_date",
+  "technician",
+  "job_column",
+  "service_appointment",
+  "service_order",
+  "service_quotation",
+  "purchase_order",
+  "equipment_section",
+  "facility",
+  "location",
+  "equipment_column",
+  "item_code",
+  "serial_no",
+  "asset_id",
+  "modality",
+  "work_section",
+  "service_type",
+  "reported_problem",
+  "action_performed",
+  "testing_and_results",
+  "work_summary",
+  "parts_used",
+  "recommendations",
+  "completion_section",
+  "disposition",
+  "engineer_signature",
+  "customer_representative",
+  "completion_column",
+  "labor_hours",
+  "travel_hours",
+  "customer_signature",
+  "customer_signoff_date"
  ],
  "fields": [
   {
-   "fieldname": "name1",
+   "fieldname": "naming_series",
+   "label": "Series",
+   "fieldtype": "Select",
+   "options": "FSR-.YYYY.-.#####",
+   "default": "FSR-.YYYY.-.#####",
+   "hidden": 1
+  },
+  {
+   "fieldname": "job_details",
+   "label": "Job Details",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "customer",
+   "label": "Customer",
+   "fieldtype": "Link",
+   "options": "Customer",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "service_date",
+   "label": "Service Date",
+   "fieldtype": "Datetime",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "technician",
+   "label": "Technician(s)",
    "fieldtype": "Data",
-   "label": "Name"
+   "reqd": 1
+  },
+  {
+   "fieldname": "job_column",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "service_appointment",
+   "label": "Service Appointment",
+   "fieldtype": "Link",
+   "options": "Service Appointment",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "service_order",
+   "label": "Service Order",
+   "fieldtype": "Link",
+   "options": "Service Order",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "service_quotation",
+   "label": "Service Quotation",
+   "fieldtype": "Link",
+   "options": "Service Quotation"
+  },
+  {
+   "fieldname": "purchase_order",
+   "label": "Customer PO Number",
+   "fieldtype": "Data",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "equipment_section",
+   "label": "Equipment and Site",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "facility",
+   "label": "Facility / Site",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "location",
+   "label": "Room / Location",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "equipment_column",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "item_code",
+   "label": "Equipment Item",
+   "fieldtype": "Link",
+   "options": "Item"
+  },
+  {
+   "fieldname": "serial_no",
+   "label": "Serial Number",
+   "fieldtype": "Link",
+   "options": "Serial No"
+  },
+  {
+   "fieldname": "asset_id",
+   "label": "Customer Asset ID",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "modality",
+   "label": "Modality",
+   "fieldtype": "Select",
+   "options": "\nCT\nMRI\nX-ray / DR\nR/F\nC-arm\nUltrasound\nMammography\nCath / Angio\nBone Density\nOther"
+  },
+  {
+   "fieldname": "work_section",
+   "label": "Service Work",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "service_type",
+   "label": "Service Type",
+   "fieldtype": "Select",
+   "options": "\nCorrective Maintenance\nPreventive Maintenance\nInstallation\nDeinstallation\nInspection\nOther"
+  },
+  {
+   "fieldname": "reported_problem",
+   "label": "Reported Problem",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "fieldname": "action_performed",
+   "label": "Action Performed",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "fieldname": "testing_and_results",
+   "label": "Testing and Results",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "fieldname": "work_summary",
+   "label": "Additional Notes",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "parts_used",
+   "label": "Parts Used (name, part number, quantity)",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "recommendations",
+   "label": "Recommendations / Follow-up",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "completion_section",
+   "label": "Completion",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "disposition",
+   "label": "Equipment Disposition",
+   "fieldtype": "Select",
+   "options": "\nReturned to Service\nLimited Use\nOut of Service\nPending Customer Action\nFollow-up Required",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "engineer_signature",
+   "label": "Engineer Signature",
+   "fieldtype": "Attach Image"
+  },
+  {
+   "fieldname": "customer_representative",
+   "label": "Customer Representative",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "completion_column",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "labor_hours",
+   "label": "Labor Hours",
+   "fieldtype": "Float",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "travel_hours",
+   "label": "Travel Hours",
+   "fieldtype": "Float",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "customer_signature",
+   "label": "Customer Signature",
+   "fieldtype": "Attach Image"
+  },
+  {
+   "fieldname": "customer_signoff_date",
+   "label": "Customer Sign-off Date",
+   "fieldtype": "Datetime"
   }
  ],
- "index_web_pages_for_search": 1,
  "links": [],
  "modified": "2025-01-25 03:17:27.417345",
  "modified_by": "Administrator",
@@ -23,19 +248,36 @@
  "owner": "Administrator",
  "permissions": [
   {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
    "role": "System Manager",
-   "share": 1,
-   "write": 1
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "submit": 1,
+   "cancel": 1
+  },
+  {
+   "role": "Service Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "print": 1,
+   "email": 1,
+   "report": 1,
+   "export": 1,
+   "submit": 1,
+   "cancel": 1
   }
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "is_submittable": 1,
+ "title_field": "customer",
+ "search_fields": "customer,service_order,serial_no,asset_id,purchase_order"
 }

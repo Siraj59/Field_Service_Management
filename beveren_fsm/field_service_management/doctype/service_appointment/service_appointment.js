@@ -21,6 +21,18 @@ frappe.ui.form.on("Service Appointment", {
     frm.trigger("disable_items_and_techs_edit");
     frm.trigger("disable_schedule_fields_on_submit");
 
+    if (!frm.is_new()) {
+      frm.add_custom_button(__("Field Service Report"), () => {
+        frappe.call({
+          method: "beveren_fsm.field_service_management.doctype.service_report.service_report.make_service_report",
+          args: { appointment_name: frm.doc.name },
+          callback: (r) => {
+            if (r.message) frappe.new_doc("Service Report", r.message);
+          },
+        });
+      }, __("Create"));
+    }
+
     if (frm.doc.docstatus == 1 && !frm.is_dirty()) {
       if (frm.doc.status == "Scheduled") {
         frm
