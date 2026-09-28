@@ -9,7 +9,7 @@
    "label": "Service Appointment By Status"
   }
  ],
- "content": "[{\"id\":\"OM5Asnk3Yb\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Open Requests\",\"col\":4}},{\"id\":\"15UfPq6SKv\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Open Orders\",\"col\":4}},{\"id\":\"w7mtVc_wCw\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Scheduled Appointments\",\"col\":4}},{\"id\":\"bjmOVGdrIM\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Service Appointment By Status\",\"col\":6}},{\"id\":\"oaawrUz3_E\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Service Order by Status\",\"col\":6}},{\"id\":\"MvJuMndtJP\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"Jwk7FRQ6i2\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"LW8kVLZMYa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Schedule\",\"col\":3}},{\"id\":\"_U1ndekMHI\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Service Technician\",\"col\":3}},{\"id\":\"4WNmCS56qX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Service Request\",\"col\":3}},{\"id\":\"pyEAdYxjm9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Service Quotation\",\"col\":3}},{\"id\":\"m4X3-WrFBc\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Service Order\",\"col\":3}},{\"id\":\"dFa0pdrg3n\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Service Appointment\",\"col\":3}},{\"id\":\"jdLCPep_4b\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"id\":\"Oaw3zAt1zm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Calendar and Grid\",\"col\":3}},{\"id\":\"axiom-fsr-shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Field Service Reports\",\"col\":3}},{\"id\":\"axiom-invoice-shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoices\",\"col\":3}},{\"id\":\"XUted4g7r-\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PIjeAP5Lu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Masters\",\"col\":4}}]",
+ "content": "[{\"id\":\"OM5Asnk3Yb\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Open Requests\",\"col\":4}},{\"id\":\"15UfPq6SKv\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Open Orders\",\"col\":4}},{\"id\":\"w7mtVc_wCw\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Scheduled Appointments\",\"col\":4}},{\"id\":\"bjmOVGdrIM\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Service Appointment By Status\",\"col\":6}},{\"id\":\"oaawrUz3_E\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Service Order by Status\",\"col\":6}},{\"id\":\"MvJuMndtJP\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"Jwk7FRQ6i2\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"LW8kVLZMYa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Schedule\",\"col\":3}},{\"id\":\"_U1ndekMHI\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Service Technician\",\"col\":3}},{\"id\":\"4WNmCS56qX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Service Request\",\"col\":3}},{\"id\":\"pyEAdYxjm9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Service Quotation\",\"col\":3}},{\"id\":\"m4X3-WrFBc\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Service Order\",\"col\":3}},{\"id\":\"dFa0pdrg3n\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Service Appointment\",\"col\":3}},{\"id\":\"jdLCPep_4b\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"id\":\"Oaw3zAt1zm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Calendar and Grid\",\"col\":3}},{\"id\":\"axiom-fsr-shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Field Service Reports\",\"col\":3}},{\"id\":\"axiom-invoice-shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoices\",\"col\":3}},{\"id\":\"axiom-test-equipment-shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Test Equipment\",\"col\":3}},{\"id\":\"XUted4g7r-\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PIjeAP5Lu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Masters\",\"col\":4}}]",
  "creation": "2025-03-04 12:44:19.754540",
  "custom_blocks": [],
  "docstatus": 0,
@@ -62,7 +62,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-06 07:11:50.675544",
+ "modified": "2026-09-28 18:38:00.000000",
  "modified_by": "Administrator",
  "module": "Field Service Management",
  "name": "Service",
@@ -161,6 +161,14 @@
    "doc_view": "List",
    "label": "Sales Invoices",
    "link_to": "Sales Invoice",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Blue",
+   "doc_view": "List",
+   "label": "Test Equipment",
+   "link_to": "Service Test Equipment",
    "stats_filter": "[]",
    "type": "DocType"
   }

@@ -4,12 +4,13 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import flt, get_datetime
+from frappe.utils import flt, get_datetime, getdate
 
 
 class ServiceReport(Document):
 	def validate(self):
 		self.calculate_time_entries()
+		self.validate_parts_and_tools()
 		if self.service_appointment:
 			appointment = frappe.get_doc("Service Appointment", self.service_appointment)
 			if appointment.customer != self.customer:
@@ -52,6 +53,36 @@ class ServiceReport(Document):
 		self.labor_hours = flt(totals["Work"], 3)
 		self.travel_hours = flt(totals["Travel"], 3)
 		self.total_hours = flt(self.labor_hours + self.travel_hours, 3)
+
+	def validate_parts_and_tools(self):
+		for row in self.parts_used_rows:
+			if flt(row.quantity) <= 0:
+				frappe.throw(_("Part row {0} needs a quantity greater than zero.").format(row.idx))
+
+		for row in self.test_tools:
+			if not row.test_equipment:
+				frappe.throw(_("Test tool row {0} needs a tool from the register.").format(row.idx))
+			as_of = getdate(row.used_on or self.service_date) if (row.used_on or self.service_date) else None
+			# Keep a historical snapshot. Later updates to a tool's due dates do not
+			# change a submitted FSR or an amendment of that FSR.
+			if row.snapshot_for == row.test_equipment and row.snapshot_as_of == str(as_of):
+				continue
+			tool = frappe.get_doc("Service Test Equipment", row.test_equipment)
+			row.tool_name = tool.equipment_name
+			def event_at_service(event_type):
+				events = [event for event in tool.maintenance_events if event.event_type == event_type]
+				eligible = [event for event in events if not as_of or getdate(event.performed_on) <= as_of]
+				return events, max(eligible, key=lambda event: getdate(event.performed_on)) if eligible else None
+
+			calibrations, calibration = event_at_service("Calibration")
+			pm_events, pm = event_at_service("Preventive Maintenance")
+			row.calibration_due_date = calibration.next_due_date if calibration else (
+				tool.calibration_due_date if not calibrations else None
+			)
+			row.pm_due_date = pm.next_due_date if pm else (tool.pm_due_date if not pm_events else None)
+			row.calibration_certificate = calibration.certificate if calibration else None
+			row.snapshot_for = row.test_equipment
+			row.snapshot_as_of = str(as_of)
 
 	def before_submit(self):
 		for field in ("reported_problem", "action_performed", "testing_and_results", "disposition"):

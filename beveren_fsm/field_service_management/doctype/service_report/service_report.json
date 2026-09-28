@@ -32,7 +32,9 @@
   "action_performed",
   "testing_and_results",
   "work_summary",
+  "parts_used_rows",
   "parts_used",
+  "test_tools",
   "recommendations",
   "time_log_section",
   "time_entries",
@@ -216,9 +218,23 @@
    "fieldtype": "Small Text"
   },
   {
+   "fieldname": "parts_used_rows",
+   "label": "Parts Used",
+   "fieldtype": "Table",
+   "options": "Service Report Part",
+   "description": "Record each part with its number, description, quantity, and type."
+  },
+  {
    "fieldname": "parts_used",
-   "label": "Parts Used (name, part number, quantity)",
+   "label": "Parts Used (Legacy Notes)",
    "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "test_tools",
+   "label": "Test Tools Used",
+   "fieldtype": "Table",
+   "options": "Service Report Test Tool",
+   "description": "Select tools from the Test Equipment register. Calibration and PM due dates are copied onto this FSR."
   },
   {
    "fieldname": "recommendations",
@@ -298,7 +314,7 @@
   }
  ],
  "links": [],
- "modified": "2026-09-28 18:24:00.000000",
+ "modified": "2026-09-28 18:38:00.000000",
  "modified_by": "Administrator",
  "module": "Field Service Management",
  "name": "Service Report",

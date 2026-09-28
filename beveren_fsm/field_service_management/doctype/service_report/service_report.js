@@ -83,3 +83,35 @@ frappe.ui.form.on("Service Report Time Entry", {
   start_datetime: update_time_entry,
   end_datetime: update_time_entry,
 });
+
+frappe.ui.form.on("Service Report Test Tool", {
+  test_equipment: update_tool_snapshot,
+  used_on: update_tool_snapshot,
+});
+
+function update_tool_snapshot(frm, cdt, cdn) {
+    const row = locals[cdt][cdn];
+    const selected = row.test_equipment;
+    if (!selected) return;
+    const asOf = (row.used_on || frm.doc.service_date || "").slice(0, 10);
+    if (row.snapshot_for === selected && row.snapshot_as_of === asOf) return;
+    if (row.snapshot_for !== selected) frappe.model.set_value(cdt, cdn, "snapshot_for", null);
+    frappe.db.get_doc("Service Test Equipment", selected).then((tool) => {
+      if (locals[cdt][cdn].test_equipment !== selected) return;
+      const events = tool.maintenance_events || [];
+      const latest = (type) => events
+        .filter((event) => event.event_type === type && (!asOf || event.performed_on <= asOf))
+        .sort((a, b) => (b.performed_on || "").localeCompare(a.performed_on || ""))[0];
+      const calibration = latest("Calibration");
+      const pm = latest("Preventive Maintenance");
+      const hasHistory = (type) => events.some((event) => event.event_type === type);
+      return Promise.all([
+        frappe.model.set_value(cdt, cdn, "tool_name", tool.equipment_name),
+        frappe.model.set_value(cdt, cdn, "calibration_due_date",
+          calibration ? calibration.next_due_date : (hasHistory("Calibration") ? null : tool.calibration_due_date || null)),
+        frappe.model.set_value(cdt, cdn, "pm_due_date",
+          pm ? pm.next_due_date : (hasHistory("Preventive Maintenance") ? null : tool.pm_due_date || null)),
+        frappe.model.set_value(cdt, cdn, "calibration_certificate", calibration?.certificate || null),
+      ]).then(() => frm.refresh_field("test_tools"));
+    });
+}

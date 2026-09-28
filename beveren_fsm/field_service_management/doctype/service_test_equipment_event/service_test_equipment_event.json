@@ -1,0 +1,60 @@
+{
+ "actions": [],
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "event_type",
+  "performed_on",
+  "next_due_date",
+  "performed_by",
+  "certificate",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "event_type",
+   "label": "Activity",
+   "fieldtype": "Select",
+   "options": "\nCalibration\nPreventive Maintenance\nInspection\nRepair",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "performed_on",
+   "label": "Performed On",
+   "fieldtype": "Date",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "next_due_date",
+   "label": "Next Due Date",
+   "fieldtype": "Date",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "performed_by",
+   "label": "Performed By",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "certificate",
+   "label": "Certificate / Record",
+   "fieldtype": "Attach"
+  },
+  {
+   "fieldname": "notes",
+   "label": "Work / Results",
+   "fieldtype": "Small Text"
+  }
+ ],
+ "links": [],
+ "modified": "2026-09-28 18:38:00.000000",
+ "modified_by": "Administrator",
+ "module": "Field Service Management",
+ "name": "Service Test Equipment Event",
+ "owner": "Administrator",
+ "permissions": [],
+ "editable_grid": 1,
+ "istable": 1
+}

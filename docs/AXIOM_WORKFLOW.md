@@ -13,6 +13,14 @@ The Service workspace now links to Field Service Reports and Sales Invoices. The
 
 Enter the original number in **Original FSR Number** and attach the signed source PDF. An already submitted FSR keeps its prior manual labor/travel totals even if it has no time rows. To add a dated log to a submitted record, use Frappe's **Cancel → Amend** workflow, then add the rows and submit the amended record. The old submitted version remains in the audit trail; check the attachments on the amended copy. An invoice PDF attached to an FSR is evidence of an invoice already issued, and attaching it does not create an ERPNext Sales Invoice.
 
+### Parts and test tools
+
+Use **Parts Used** to add a row for each part with its part number, description, quantity, type, serial number, and notes. The former free-text field is retained as **Parts Used (Legacy Notes)** for historical reports. These rows document service parts; they do not automatically move stock or create charges.
+
+Use **Service Test Equipment** as a register for Axiom's test tools. Give each tool a unique asset number and record its description, manufacturer, model, serial number, storage location, custodian, calibration and PM due dates, and status. The **Completed Activities** table records calibration, PM, inspection, and repair, with a certificate or checklist attached to the event. The most recent calibration or PM event with a next due date updates that tool's due date. Its list displays attention indicators for overdue dates and dates within 30 days. A blank calibration due date on an active tool marked **Calibration Required** also needs attention.
+
+On an FSR, add the equipment from the register to **Test Tools Used** and specify the date used. The tool description, due dates, and most recent calibration certificate as of that service date are copied into the FSR at save. When no event history exists, the register's entered due date is used, so review it for backdated reports. Those values remain historical snapshots when the tool's register is later updated. Review the tool's calibration status for the actual service date before submission; the FSR does not claim that a tool was calibrated merely because a date was entered.
+
 ## Update a development site
 
 From the bench directory on the machine running Frappe, update the app checkout to the branch containing these changes, then run:
