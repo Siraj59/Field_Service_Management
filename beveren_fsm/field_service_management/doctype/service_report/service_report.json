@@ -5,6 +5,7 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
+  "amended_from",
   "job_details",
   "customer",
   "service_date",
@@ -54,6 +55,16 @@
    "options": "FSR-.YYYY.-.#####",
    "default": "FSR-.YYYY.-.#####",
    "hidden": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Service Report",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   },
   {
    "fieldname": "job_details",
@@ -287,7 +298,7 @@
   }
  ],
  "links": [],
- "modified": "2026-09-28 18:05:00.000000",
+ "modified": "2026-09-28 18:24:00.000000",
  "modified_by": "Administrator",
  "module": "Field Service Management",
  "name": "Service Report",
